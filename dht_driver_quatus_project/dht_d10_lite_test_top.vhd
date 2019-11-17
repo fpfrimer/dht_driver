@@ -7,12 +7,12 @@ entity dht_d10_lite_test_top is
         MAX10_CLK1_50   :   in      std_logic;
         KEY             :   in      std_logic_vector(1 downto 0);
         GPIO            :   inout   std_logic_vector(26 downto 26);
-        HEX5            :   out     std_logic_vector(0 to 6);
-        HEX4            :   out     std_logic_vector(0 to 6);
-        HEX3            :   out     std_logic_vector(0 to 6);
-        HEX2            :   out     std_logic_vector(0 to 6);
-        HEX1            :   out     std_logic_vector(0 to 6);
-        HEX0            :   out     std_logic_vector(0 to 6);
+        HEX5            :   out     std_logic_vector(0 to 7);
+        HEX4            :   out     std_logic_vector(0 to 7);
+        HEX3            :   out     std_logic_vector(0 to 7);
+        HEX2            :   out     std_logic_vector(0 to 7);
+        HEX1            :   out     std_logic_vector(0 to 7);
+        HEX0            :   out     std_logic_vector(0 to 7);
         LEDR            :   out     std_logic_vector(5 downto 0);
         SW              :   in      std_logic_vector(0 downto 0);
         ARDUINO_IO      :   out     std_logic_vector(0 downto 0)
@@ -22,28 +22,28 @@ end entity;
 architecture arch of dht_d10_lite_test_top is
 
     function bcd_to_7seg(
-		data	:	std_logic_vector(3 downto 0)) 
+		data	:	std_logic_vector(3 downto 0); dot : std_logic)
 	return std_logic_vector is
 	begin
 	
 		case data is
-			when "0000" => return "0000001"; -- "0"     
-			when "0001" => return "1001111"; -- "1" 
-			when "0010" => return "0010010"; -- "2" 
-			when "0011" => return "0000110"; -- "3" 
-			when "0100" => return "1001100"; -- "4" 
-			when "0101" => return "0100100"; -- "5" 
-			when "0110" => return "0100000"; -- "6" 
-			when "0111" => return "0001111"; -- "7" 
-			when "1000" => return "0000000"; -- "8"     
-            when "1001" => return "0000100"; -- "9"
-            when "1010" => return "0001000"; -- a
-            when "1011" => return "1100000"; -- b
-            when "1100" => return "0110001"; -- C                
-            when "1101" => return "1000010"; -- d
-            when "1110" => return "0110000"; -- E
-            when "1111" => return "0111000"; -- F
-			when others => return "1111111";			
+			when "0000" => return "0000001" & not dot; -- "0"     
+			when "0001" => return "1001111" & not dot; -- "1" 
+			when "0010" => return "0010010" & not dot; -- "2" 
+			when "0011" => return "0000110" & not dot; -- "3" 
+			when "0100" => return "1001100" & not dot; -- "4" 
+			when "0101" => return "0100100" & not dot; -- "5" 
+			when "0110" => return "0100000" & not dot; -- "6" 
+			when "0111" => return "0001111" & not dot; -- "7" 
+			when "1000" => return "0000000" & not dot; -- "8"     
+            when "1001" => return "0000100" & not dot; -- "9"
+            when "1010" => return "0001000" & not dot; -- a
+            when "1011" => return "1100000" & not dot; -- b
+            when "1100" => return "0110001" & not dot; -- C                
+            when "1101" => return "1000010" & not dot; -- d
+            when "1110" => return "0110000" & not dot; -- E
+            when "1111" => return "0111000" & not dot; -- F
+			when others => return "1111111" & not dot;			
 		end case;	
 	end function;
 
@@ -59,12 +59,7 @@ architecture arch of dht_d10_lite_test_top is
 
     signal reading : std_logic_vector(31 downto 0);
 
-    alias rh_int   : std_logic_vector(7 downto 0) is reading(31 downto 24);
-    alias rh_dec   : std_logic_vector(7 downto 0) is reading(23 downto 16);
-    alias tp_int   : std_logic_vector(7 downto 0) is reading(15 downto 8);
-    alias tp_dec   : std_logic_vector(7 downto 0) is reading(7 downto 0);
-
-    signal it       :   integer range 0 to 39;
+    signal it       :   integer range 0 to 40;
 
     signal clk1 :   std_logic;
     
@@ -83,27 +78,65 @@ begin
         d := it/10;
         u := it mod 10;
 
-        HEX5 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)));
-        HEX4 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)));
+        HEX5 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)),'0');
+        HEX4 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)),'0');
         
     end process ; -- it_process
-    
+
+
     
     display : process( sel, reading )
+        variable data   :   integer range 0 to 65535;
+        variable c, d, u, dec   :   integer range 0 to 9;
+        variable temp   :   integer range 0 to 9999;
     begin
         case( sel ) is
         
-            when '0' =>
-                HEX3 <= bcd_to_7seg(rh_int(7 downto 4));
-                HEX2 <= bcd_to_7seg(rh_int(3 downto 0));
-                HEX1 <= bcd_to_7seg(rh_dec(7 downto 4));
-                HEX0 <= bcd_to_7seg(rh_dec(3 downto 0));
+            when '0' => -- RH
+                data := to_integer(unsigned(reading(31 downto 16)));
+                c := data / 1000;
+                temp := data - c*1000;
+                d := temp / 100;
+                temp := temp - d*100;
+                u := temp / 10;
+                dec := temp mod 10;
+
+                HEX3 <= bcd_to_7seg(std_logic_vector(to_unsigned(c,4)),'0');
+                HEX2 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)),'0');
+                HEX1 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)),'1');
+                HEX0 <= bcd_to_7seg(std_logic_vector(to_unsigned(dec,4)),'0');
+                
             
-            when '1' =>
-                HEX3 <= bcd_to_7seg(tp_int(7 downto 4));
-                HEX2 <= bcd_to_7seg(tp_int(3 downto 0));
-                HEX1 <= bcd_to_7seg(tp_dec(7 downto 4));
-                HEX0 <= bcd_to_7seg(tp_dec(3 downto 0));
+            when '1' => -- Temp
+                data := to_integer(unsigned(reading(15 downto 0)));
+                if reading(15) = '0' then
+                    c := data / 1000;
+                    temp := data - c*1000;
+                    d := temp / 100;
+                    temp := temp - d*100;
+                    u := temp / 10;
+                    dec := temp mod 10;
+
+                    HEX3 <= bcd_to_7seg(std_logic_vector(to_unsigned(c,4)),'0');
+                    HEX2 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)),'0');
+                    HEX1 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)),'1');
+                    HEX0 <= bcd_to_7seg(std_logic_vector(to_unsigned(dec,4)),'0');
+
+                else
+                    c := data / 1000;
+                    temp := data - c*1000;
+                    d := temp / 100;
+                    temp := temp - d*100;
+                    u := temp / 10;
+                    dec := temp mod 10;
+
+                    HEX3 <= "00000010"; -- Negative
+                    HEX2 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)),'0');
+                    HEX1 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)),'1');
+                    HEX0 <= bcd_to_7seg(std_logic_vector(to_unsigned(dec,4)),'0');
+                    
+                end if;
+                
         
             when others =>
                 null;

@@ -60,6 +60,10 @@
 					"strict" : false
 				},
 				{
+					"name" : "HEX3[7]",
+					"strict" : false
+				},
+				{
 					"name" : "HEX3[6]",
 					"strict" : false
 				},
