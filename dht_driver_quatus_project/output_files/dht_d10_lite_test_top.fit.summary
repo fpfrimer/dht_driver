@@ -1,14 +1,14 @@
-Fitter Status : Successful - Sun Nov 17 08:53:45 2019
+Fitter Status : Successful - Sun Nov 17 10:46:30 2019
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Standard Edition
 Revision Name : dht_d10_lite_test_top
 Top-level Entity Name : dht_d10_lite_test_top
 Family : MAX 10
 Device : 10M50DAF484C7G
 Timing Models : Final
-Total logic elements : 463 / 49,760 ( < 1 % )
-    Total combinational functions : 460 / 49,760 ( < 1 % )
-    Dedicated logic registers : 211 / 49,760 ( < 1 % )
-Total registers : 211
+Total logic elements : 352 / 49,760 ( < 1 % )
+    Total combinational functions : 350 / 49,760 ( < 1 % )
+    Dedicated logic registers : 115 / 49,760 ( < 1 % )
+Total registers : 115
 Total pins : 54 / 360 ( 15 % )
 Total virtual pins : 0
 Total memory bits : 0 / 1,677,312 ( 0 % )
