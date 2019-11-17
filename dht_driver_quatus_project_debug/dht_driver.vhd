@@ -114,7 +114,7 @@ begin
     -----------------------------------------------------------------------------------------------
     
     -- State machine only process
-    dth_sm : process( clk, rst, data, req )
+    dht_sm : process( clk, rst, data, req )
         variable i : integer range 0 to 2*f_in := 0; -- Counter
         variable n : integer range 0 to 40 := 0;
         variable bit_stream : unsigned(39 downto 0);
@@ -245,5 +245,5 @@ begin
                 end case ;
             end if;
         end if;
-    end process ; -- dth_sm
+    end process ; -- dht_sm
 end main ; -- main
