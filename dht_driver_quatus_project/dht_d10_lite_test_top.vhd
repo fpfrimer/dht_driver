@@ -26,16 +26,16 @@ architecture arch of dht_d10_lite_test_top is
 	return std_logic_vector is
 	begin
 	
-		case data is
-			when "0000" => return "0000001" & not dot; -- "0"     
-			when "0001" => return "1001111" & not dot; -- "1" 
-			when "0010" => return "0010010" & not dot; -- "2" 
-			when "0011" => return "0000110" & not dot; -- "3" 
-			when "0100" => return "1001100" & not dot; -- "4" 
-			when "0101" => return "0100100" & not dot; -- "5" 
-			when "0110" => return "0100000" & not dot; -- "6" 
-			when "0111" => return "0001111" & not dot; -- "7" 
-			when "1000" => return "0000000" & not dot; -- "8"     
+        case data is
+            when "0000" => return "0000001" & not dot; -- "0"     
+            when "0001" => return "1001111" & not dot; -- "1" 
+            when "0010" => return "0010010" & not dot; -- "2" 
+            when "0011" => return "0000110" & not dot; -- "3" 
+            when "0100" => return "1001100" & not dot; -- "4" 
+            when "0101" => return "0100100" & not dot; -- "5" 
+            when "0110" => return "0100000" & not dot; -- "6" 
+            when "0111" => return "0001111" & not dot; -- "7" 
+            when "1000" => return "0000000" & not dot; -- "8"     
             when "1001" => return "0000100" & not dot; -- "9"
             when "1010" => return "0001000" & not dot; -- a
             when "1011" => return "1100000" & not dot; -- b
@@ -43,8 +43,8 @@ architecture arch of dht_d10_lite_test_top is
             when "1101" => return "1000010" & not dot; -- d
             when "1110" => return "0110000" & not dot; -- E
             when "1111" => return "0111000" & not dot; -- F
-			when others => return "1111111" & not dot;			
-		end case;	
+            when others => return "1111111" & not dot;			
+        end case;	
 	end function;
 
     alias clk : std_logic is MAX10_CLK1_50;
