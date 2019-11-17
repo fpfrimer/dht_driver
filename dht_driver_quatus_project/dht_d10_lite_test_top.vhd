@@ -72,7 +72,7 @@ architecture arch of dht_d10_lite_test_top is
 begin
 
     u1: entity work.dht_driver(main)
-        generic map(500_000)
+        generic map(50_000_000)
         port map(clk1, rst, data, req, busy, isvalid, reading, state, debug, it);
     u2: entity work.pll(SYN) port map(clk, clk1);
 

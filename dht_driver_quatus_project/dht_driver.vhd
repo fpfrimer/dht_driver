@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 
 entity dht_driver is
     generic(
-        f_in        :   integer := 500_000                              -- Input frequency generic
+        f_in        :   integer := 50_000_000                           -- Input frequency generic        
     );
     port (        
         clk, rst    :   in      std_logic;                              -- Clock and reset        
@@ -22,6 +22,11 @@ entity dht_driver is
 end dht_driver;
 
 architecture main of dht_driver is
+
+    -----------------------------------------------------------------------------------------------
+    -- Constants
+    -----------------------------------------------------------------------------------------------
+    constant f_op        :   integer := 500_000;                             -- Operation frequency
     
     -----------------------------------------------------------------------------------------------
     -- DHT state machine types and signals
@@ -41,11 +46,13 @@ architecture main of dht_driver is
     );
     signal dht_state : dht_state_t;
     signal debug_t :    std_logic;
+    signal enable  :    std_logic;
 
 begin
     
     -- Debug statements (will be removed)
-    debug <= debug_t;
+    --debug <= debug_t;
+    debug <= enable;
 
     with dht_state select
         state <= x"0" when START,
@@ -58,6 +65,21 @@ begin
                  x"7" when DHT_RECEIVE_DATA,
                  x"8" when DHT_CHECKSUM,
                  x"F" when others;
+
+    -- Clock management
+    clock_management : process( clk )
+        variable i : integer range 0 to f_in / f_op;
+    begin
+        if rising_edge(clk) then
+            if i = f_in / f_op - 1 then
+                enable <= '1';
+                i := 0;
+            else
+                enable <= '0';
+                i := i + 1;
+            end if;
+        end if;
+    end process ; -- clock_management
 
     -- DHT data pin control process
     data_control : process( dht_state )
@@ -113,113 +135,114 @@ begin
             dht_state <= START;
             isvalid <= '0';            
         elsif rising_edge(clk) then
-            
-            case( dht_state ) is
-            
-                when START =>
-                    if i = f_in*2 then  -- Wait ~2 s
-                        i := 0;
-                        dht_state <= WAIT_RQ;
-                    else
-                        i := i + 1;
-                        dht_state <= START;
-                    end if;                    
+            if enable = '1' then
+                case( dht_state ) is
                 
-                when WAIT_RQ =>                    
-                    if req = '0' then                        
-                        isvalid <= '0';
-                        dht_state <= START_SIGNAL_L; 
-                    else
-                        dht_state <= WAIT_RQ;                    
-                    end if ;
-
-                when START_SIGNAL_L => 
-                    if i = f_in/50 then -- Wait ~20 ms
-                        i := 0;
-                        dht_state <= START_SIGNAL_H;
-                    else
-                        i := i + 1;
-                        dht_state <= START_SIGNAL_L;                      
-                    end if ;
-
-                when START_SIGNAL_H =>                    
-                    if i = f_in/50_000 then -- Wait ~20 us
-                        i := 0;
-                        dht_state <= DHT_RESPONSE_L;
-                    else
-                        i := i + 1;
-                        dht_state <= START_SIGNAL_H;
-                    end if;                    
-                
-                when DHT_RESPONSE_L =>
-                    
-                    if i = f_in/20000 then -- Wait ~50 us 
-                        if data = '1' then
+                    when START =>
+                        if i = f_op*2 then  -- Wait ~2 s
                             i := 0;
+                            dht_state <= WAIT_RQ;
+                        else
+                            i := i + 1;
+                            dht_state <= START;
+                        end if;                    
+                    
+                    when WAIT_RQ =>                    
+                        if req = '0' then                        
+                            isvalid <= '0';
+                            dht_state <= START_SIGNAL_L; 
+                        else
+                            dht_state <= WAIT_RQ;                    
+                        end if ;
+
+                    when START_SIGNAL_L => 
+                        if i = f_op/50 then -- Wait ~20 ms
+                            i := 0;
+                            dht_state <= START_SIGNAL_H;
+                        else
+                            i := i + 1;
+                            dht_state <= START_SIGNAL_L;                      
+                        end if ;
+
+                    when START_SIGNAL_H =>                    
+                        if i = f_op/50_000 then -- Wait ~20 us
+                            i := 0;
+                            dht_state <= DHT_RESPONSE_L;
+                        else
+                            i := i + 1;
+                            dht_state <= START_SIGNAL_H;
+                        end if;                    
+                    
+                    when DHT_RESPONSE_L =>
+                        
+                        if i = f_op/20000 then -- Wait ~50 us 
+                            if data = '1' then
+                                i := 0;
+                                dht_state <= DHT_RESPONSE_H;
+                            end if;
+                        else
+                            i := i + 1;
+                            dht_state <= DHT_RESPONSE_L;
+                        end if;
+
+                    when DHT_RESPONSE_H =>
+                        
+                        
+                        if data = '0' then
+                            dht_state <= DHT_RECEIVE_ZERO;
+                        else
                             dht_state <= DHT_RESPONSE_H;
                         end if;
-                    else
-                        i := i + 1;
-                        dht_state <= DHT_RESPONSE_L;
-                    end if;
+                        
 
-                when DHT_RESPONSE_H =>
-                    
-                    
-                    if data = '0' then
-                        dht_state <= DHT_RECEIVE_ZERO;
-                    else
-                        dht_state <= DHT_RESPONSE_H;
-                    end if;
-                    
-
-                when DHT_RECEIVE_ZERO =>
-                    
-                    if data = '1' then                
-                        dht_state <= DHT_RECEIVE_DATA;
-                    else
-                        dht_state <= DHT_RECEIVE_ZERO;
-                    end if;
-                                        
-                when DHT_RECEIVE_DATA =>
-                    debug_t <= '0';
-                    dht_state <= DHT_CHECKSUM;                                                                            
-                    if data = '0' then
-                        n := n + 1;
-                        it <= n;                        
-                        dht_state <= DHT_RECEIVE_ZERO;                                                                          
-                        if i < f_in/25_000 then  -- ~40 us
-                            bit_stream := bit_stream (38 downto 0) & '0';                            
-                        elsif i < f_in/4_000 then -- 80 us
-                            bit_stream := bit_stream (38 downto 0) & '1';                            
+                    when DHT_RECEIVE_ZERO =>
+                        
+                        if data = '1' then                
+                            dht_state <= DHT_RECEIVE_DATA;
+                        else
+                            dht_state <= DHT_RECEIVE_ZERO;
                         end if;
-                        i := 0;
-                    else
-                        i := i + 1;
-                        dht_state <= DHT_RECEIVE_DATA;
-                        if i > f_in/2_000 then
+                                            
+                    when DHT_RECEIVE_DATA =>
+                        debug_t <= '0';
+                        dht_state <= DHT_CHECKSUM;                                                                            
+                        if data = '0' then
+                            n := n + 1;
+                            it <= n;                        
+                            dht_state <= DHT_RECEIVE_ZERO;                                                                          
+                            if i < f_op/25_000 then  -- ~40 us
+                                bit_stream := bit_stream (38 downto 0) & '0';                            
+                            elsif i < f_op/4_000 then -- 80 us
+                                bit_stream := bit_stream (38 downto 0) & '1';                            
+                            end if;
                             i := 0;
-                            debug_t <= '1';
-                            n := 0;
-                            reading <= std_logic_vector(bit_stream(39 downto 8));
-                            bit_stream := (others => '0');
-                            dht_state <= DHT_CHECKSUM;
+                        else
+                            i := i + 1;
+                            dht_state <= DHT_RECEIVE_DATA;
+                            if i > f_op/2_000 then
+                                i := 0;
+                                debug_t <= '1';
+                                n := 0;
+                                reading <= std_logic_vector(bit_stream(39 downto 8));
+                                bit_stream := (others => '0');
+                                dht_state <= DHT_CHECKSUM;
+                            end if;
+
                         end if;
 
-                    end if;
+                    when DHT_CHECKSUM =>                    
+                        if checksum = rh_int+rh_dec+tp_int+tp_dec then                                 
+                            isvalid <= '1';
+                        else 
+                            isvalid <= '0';
+                        end if; 
+                        dht_state <= START;
 
-                when DHT_CHECKSUM =>                    
-                    if checksum = rh_int+rh_dec+tp_int+tp_dec then                                 
-                        isvalid <= '1';
-                    else 
-                        isvalid <= '0';
-                    end if; 
-                    dht_state <= START;
-
-                when others =>
-                    null;
-            
-            end case ;
+                    when others =>
+                        null;
+                
+                end case ;
+            end if;
         end if;
     end process ; -- dth_sm
 end main ; -- main

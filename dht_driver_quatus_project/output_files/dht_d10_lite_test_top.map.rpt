@@ -1,5 +1,5 @@
 Analysis & Synthesis report for dht_d10_lite_test_top
-Sun Nov 17 10:46:19 2019
+Sun Nov 17 11:26:19 2019
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Standard Edition
 
 
@@ -50,15 +50,15 @@ refer to the applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Sun Nov 17 10:46:19 2019           ;
+; Analysis & Synthesis Status        ; Successful - Sun Nov 17 11:26:19 2019           ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Standard Edition ;
 ; Revision Name                      ; dht_d10_lite_test_top                           ;
 ; Top-level Entity Name              ; dht_d10_lite_test_top                           ;
 ; Family                             ; MAX 10                                          ;
-; Total logic elements               ; 381                                             ;
-;     Total combinational functions  ; 349                                             ;
-;     Dedicated logic registers      ; 115                                             ;
-; Total registers                    ; 115                                             ;
+; Total logic elements               ; 409                                             ;
+;     Total combinational functions  ; 377                                             ;
+;     Dedicated logic registers      ; 129                                             ;
+; Total registers                    ; 129                                             ;
 ; Total pins                         ; 54                                              ;
 ; Total virtual pins                 ; 0                                               ;
 ; Total memory bits                  ; 0                                               ;
@@ -205,20 +205,20 @@ refer to the applicable agreement for further details.
 +---------------------------------------------+---------------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                                     ;
 +---------------------------------------------+---------------------------------------------------------------------------+
-; Estimated Total logic elements              ; 381                                                                       ;
+; Estimated Total logic elements              ; 409                                                                       ;
 ;                                             ;                                                                           ;
-; Total combinational functions               ; 349                                                                       ;
+; Total combinational functions               ; 377                                                                       ;
 ; Logic element usage by number of LUT inputs ;                                                                           ;
-;     -- 4 input functions                    ; 146                                                                       ;
-;     -- 3 input functions                    ; 88                                                                        ;
-;     -- <=2 input functions                  ; 115                                                                       ;
+;     -- 4 input functions                    ; 154                                                                       ;
+;     -- 3 input functions                    ; 92                                                                        ;
+;     -- <=2 input functions                  ; 131                                                                       ;
 ;                                             ;                                                                           ;
 ; Logic elements by mode                      ;                                                                           ;
-;     -- normal mode                          ; 286                                                                       ;
-;     -- arithmetic mode                      ; 63                                                                        ;
+;     -- normal mode                          ; 301                                                                       ;
+;     -- arithmetic mode                      ; 76                                                                        ;
 ;                                             ;                                                                           ;
-; Total registers                             ; 115                                                                       ;
-;     -- Dedicated logic registers            ; 115                                                                       ;
+; Total registers                             ; 129                                                                       ;
+;     -- Dedicated logic registers            ; 129                                                                       ;
 ;     -- I/O registers                        ; 0                                                                         ;
 ;                                             ;                                                                           ;
 ; I/O pins                                    ; 54                                                                        ;
@@ -229,8 +229,8 @@ refer to the applicable agreement for further details.
 ;     -- PLLs                                 ; 1                                                                         ;
 ;                                             ;                                                                           ;
 ; Maximum fan-out node                        ; pll:u2|altpll:altpll_component|pll_altpll:auto_generated|wire_pll1_clk[0] ;
-; Maximum fan-out                             ; 116                                                                       ;
-; Total fan-out                               ; 1593                                                                      ;
+; Maximum fan-out                             ; 130                                                                       ;
+; Total fan-out                               ; 1713                                                                      ;
 ; Average fan-out                             ; 2.78                                                                      ;
 +---------------------------------------------+---------------------------------------------------------------------------+
 
@@ -240,8 +240,8 @@ refer to the applicable agreement for further details.
 +----------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+------------------------------------------------------------------------------------------------------------------------+-----------------------+--------------+
 ; Compilation Hierarchy Node             ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                                                                    ; Entity Name           ; Library Name ;
 +----------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+------------------------------------------------------------------------------------------------------------------------+-----------------------+--------------+
-; |dht_d10_lite_test_top                 ; 349 (98)            ; 115 (0)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 54   ; 0            ; 0          ; |dht_d10_lite_test_top                                                                                                 ; dht_d10_lite_test_top ; work         ;
-;    |dht_driver:u1|                     ; 185 (185)           ; 115 (115)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |dht_d10_lite_test_top|dht_driver:u1                                                                                   ; dht_driver            ; work         ;
+; |dht_d10_lite_test_top                 ; 377 (98)            ; 129 (0)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 54   ; 0            ; 0          ; |dht_d10_lite_test_top                                                                                                 ; dht_d10_lite_test_top ; work         ;
+;    |dht_driver:u1|                     ; 213 (213)           ; 129 (129)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |dht_d10_lite_test_top|dht_driver:u1                                                                                   ; dht_driver            ; work         ;
 ;    |lpm_divide:Div0|                   ; 30 (0)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |dht_d10_lite_test_top|lpm_divide:Div0                                                                                 ; lpm_divide            ; work         ;
 ;       |lpm_divide_7sl:auto_generated|  ; 30 (0)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |dht_d10_lite_test_top|lpm_divide:Div0|lpm_divide_7sl:auto_generated                                                   ; lpm_divide_7sl        ; work         ;
 ;          |sign_div_unsign_9kh:divider| ; 30 (0)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |dht_d10_lite_test_top|lpm_divide:Div0|lpm_divide_7sl:auto_generated|sign_div_unsign_9kh:divider                       ; sign_div_unsign_9kh   ; work         ;
@@ -289,12 +289,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 115   ;
+; Total registers                              ; 129   ;
 ; Number of registers using Synchronous Clear  ; 0     ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 108   ;
+; Number of registers using Asynchronous Clear ; 115   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 83    ;
+; Number of registers using Clock Enable       ; 93    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -304,20 +304,20 @@ Encoding Type:  One-Hot
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                 ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
-; 3:1                ; 39 bits   ; 78 LEs        ; 39 LEs               ; 39 LEs                 ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:bit_stream[7] ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:n[1]          ;
-; 13:1               ; 20 bits   ; 160 LEs       ; 20 LEs               ; 140 LEs                ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:i[11]         ;
+; 3:1                ; 39 bits   ; 78 LEs        ; 39 LEs               ; 39 LEs                 ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:bit_stream[8] ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:n[5]          ;
+; 13:1               ; 27 bits   ; 216 LEs       ; 27 LEs               ; 189 LEs                ; Yes        ; |dht_d10_lite_test_top|dht_driver:u1|\dth_sm:i[14]         ;
 ; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |dht_d10_lite_test_top|dht_driver:u1|dht_state             ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------+
 
 
 +------------------------------------------------------------+
 ; Parameter Settings for User Entity Instance: dht_driver:u1 ;
-+----------------+--------+----------------------------------+
-; Parameter Name ; Value  ; Type                             ;
-+----------------+--------+----------------------------------+
-; f_in           ; 500000 ; Signed Integer                   ;
-+----------------+--------+----------------------------------+
++----------------+----------+--------------------------------+
+; Parameter Name ; Value    ; Type                           ;
++----------------+----------+--------------------------------+
+; f_in           ; 50000000 ; Signed Integer                 ;
++----------------+----------+--------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -373,7 +373,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; CLK3_DIVIDE_BY                ; 1                     ; Untyped             ;
 ; CLK2_DIVIDE_BY                ; 1                     ; Untyped             ;
 ; CLK1_DIVIDE_BY                ; 1                     ; Untyped             ;
-; CLK0_DIVIDE_BY                ; 100                   ; Signed Integer      ;
+; CLK0_DIVIDE_BY                ; 1                     ; Signed Integer      ;
 ; CLK9_PHASE_SHIFT              ; 0                     ; Untyped             ;
 ; CLK8_PHASE_SHIFT              ; 0                     ; Untyped             ;
 ; CLK7_PHASE_SHIFT              ; 0                     ; Untyped             ;
@@ -764,26 +764,26 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
 ; boundary_port         ; 54                          ;
-; cycloneiii_ff         ; 115                         ;
-;     CLR               ; 31                          ;
+; cycloneiii_ff         ; 129                         ;
+;     CLR               ; 28                          ;
 ;     ENA               ; 6                           ;
-;     ENA CLR           ; 77                          ;
-;     plain             ; 1                           ;
+;     ENA CLR           ; 87                          ;
+;     plain             ; 8                           ;
 ; cycloneiii_io_obuf    ; 1                           ;
-; cycloneiii_lcell_comb ; 356                         ;
-;     arith             ; 63                          ;
-;         2 data inputs ; 25                          ;
+; cycloneiii_lcell_comb ; 384                         ;
+;     arith             ; 76                          ;
+;         2 data inputs ; 38                          ;
 ;         3 data inputs ; 38                          ;
-;     normal            ; 293                         ;
+;     normal            ; 308                         ;
 ;         0 data inputs ; 6                           ;
-;         1 data inputs ; 9                           ;
-;         2 data inputs ; 82                          ;
-;         3 data inputs ; 50                          ;
-;         4 data inputs ; 146                         ;
+;         1 data inputs ; 10                          ;
+;         2 data inputs ; 84                          ;
+;         3 data inputs ; 54                          ;
+;         4 data inputs ; 154                         ;
 ; cycloneiii_pll        ; 1                           ;
 ;                       ;                             ;
-; Max LUT depth         ; 10.30                       ;
-; Average LUT depth     ; 5.46                        ;
+; Max LUT depth         ; 11.50                       ;
+; Average LUT depth     ; 5.92                        ;
 +-----------------------+-----------------------------+
 
 
@@ -802,7 +802,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Standard Edition
-    Info: Processing started: Sun Nov 17 10:46:05 2019
+    Info: Processing started: Sun Nov 17 11:26:05 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off dht_d10_lite_test_top -c dht_d10_lite_test_top
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -817,12 +817,13 @@ Info (12021): Found 2 design units, including 1 entities, in source file pll.vhd
     Info (12023): Found entity 1: pll File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/pll.vhd Line: 42
 Info (12127): Elaborating entity "dht_d10_lite_test_top" for the top level hierarchy
 Info (12129): Elaborating entity "dht_driver" using architecture "A:main" for hierarchy "dht_driver:u1" File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/dht_d10_lite_test_top.vhd Line: 74
+Warning (10036): Verilog HDL or VHDL warning at dht_driver.vhd(48): object "debug_t" assigned a value but never read File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/dht_driver.vhd Line: 48
 Info (12129): Elaborating entity "pll" using architecture "A:syn" for hierarchy "pll:u2" File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/dht_d10_lite_test_top.vhd Line: 77
 Info (12128): Elaborating entity "altpll" for hierarchy "pll:u2|altpll:altpll_component" File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/pll.vhd Line: 133
 Info (12130): Elaborated megafunction instantiation "pll:u2|altpll:altpll_component" File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/pll.vhd Line: 133
 Info (12133): Instantiated megafunction "pll:u2|altpll:altpll_component" with the following parameter: File: D:/OneDrive/Quartus/dht_driver_git/dht_driver/dht_driver_quatus_project/pll.vhd Line: 133
     Info (12134): Parameter "bandwidth_type" = "AUTO"
-    Info (12134): Parameter "clk0_divide_by" = "100"
+    Info (12134): Parameter "clk0_divide_by" = "1"
     Info (12134): Parameter "clk0_duty_cycle" = "50"
     Info (12134): Parameter "clk0_multiply_by" = "1"
     Info (12134): Parameter "clk0_phase_shift" = "0"
@@ -962,15 +963,15 @@ Warning (20013): Ignored 24 assignments for entity "thttimer" -- entity does not
     Warning (20014): Assignment for entity set_global_assignment -name PARTITION_ENABLE_STRICT_PRESERVATION OFF -entity thttimer -section_id Top was ignored
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 438 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 466 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 4 input pins
     Info (21059): Implemented 49 output pins
     Info (21060): Implemented 1 bidirectional pins
-    Info (21061): Implemented 383 logic cells
+    Info (21061): Implemented 411 logic cells
     Info (21065): Implemented 1 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 51 warnings
-    Info: Peak virtual memory: 4800 megabytes
-    Info: Processing ended: Sun Nov 17 10:46:19 2019
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 52 warnings
+    Info: Peak virtual memory: 4804 megabytes
+    Info: Processing ended: Sun Nov 17 11:26:19 2019
     Info: Elapsed time: 00:00:14
     Info: Total CPU time (on all processors): 00:00:28
 
