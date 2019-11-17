@@ -4,7 +4,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tht11control is
+entity dht_driver is
     generic(f_in        :   integer := 50_000_000);
     port (
         -- Clock and reset:
@@ -35,9 +35,9 @@ entity tht11control is
         --HEX0        :   out     std_logic_vector(0 to 6)        
                       
     ) ;
-end tht11control;
+end dht_driver;
 
-architecture main of tht11control is
+architecture main of dht_driver is
     
     -----------------------------------------------------------------------------------------------
     -- DHT state machine types and signals

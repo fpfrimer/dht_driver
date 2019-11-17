@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity tht_top is
+entity dht_d10_lite_test_top is
     port(
         MAX10_CLK1_50   :   in      std_logic;
         KEY             :   in      std_logic_vector(1 downto 0);
@@ -19,7 +19,7 @@ entity tht_top is
     );
 end entity;
 
-architecture arch of tht_top is
+architecture arch of dht_d10_lite_test_top is
 
     function bcd_to_7seg(
 		data	:	std_logic_vector(3 downto 0)) 
@@ -71,7 +71,7 @@ architecture arch of tht_top is
 
 begin
 
-    u1: entity work.tht11control(main)
+    u1: entity work.dht_driver(main)
         generic map(500_000)
         port map(clk1, rst, data, req, busy, isvalid, reading, state, debug, it);
     u2: entity work.pll(SYN) port map(clk, clk1);
