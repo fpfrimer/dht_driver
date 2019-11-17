@@ -7,15 +7,12 @@ entity dht_d10_lite_test_top is
         MAX10_CLK1_50   :   in      std_logic;
         KEY             :   in      std_logic_vector(1 downto 0);
         GPIO            :   inout   std_logic_vector(26 downto 26);
-        HEX5            :   out     std_logic_vector(0 to 7);
-        HEX4            :   out     std_logic_vector(0 to 7);
         HEX3            :   out     std_logic_vector(0 to 7);
         HEX2            :   out     std_logic_vector(0 to 7);
         HEX1            :   out     std_logic_vector(0 to 7);
         HEX0            :   out     std_logic_vector(0 to 7);
-        LEDR            :   out     std_logic_vector(5 downto 0);
-        SW              :   in      std_logic_vector(0 downto 0);
-        ARDUINO_IO      :   out     std_logic_vector(0 downto 0)
+        LEDR            :   out     std_logic_vector(1 downto 0);
+        SW              :   in      std_logic_vector(0 downto 0)
     );
 end entity;
 
@@ -54,37 +51,16 @@ architecture arch of dht_d10_lite_test_top is
     alias busy : std_logic is LEDR(0);
     alias isvalid : std_logic is LEDR(1);
     alias sel : std_logic is SW(0);
-    alias debug :std_logic is ARDUINO_IO(0);
-    alias state : std_logic_vector(3 downto 0) is LEDR(5 downto 2);
-
     signal reading : std_logic_vector(31 downto 0);
-
-    signal it       :   integer range 0 to 40;
-
-    signal clk1 :   std_logic;
-    
+    signal clk1 :   std_logic;   
 
 begin
 
     u1: entity work.dht_driver(main)
         generic map(50_000_000)
-        port map(clk1, rst, data, req, busy, isvalid, reading, state, debug, it);
+        port map(clk1, rst, data, req, busy, isvalid, reading);
     u2: entity work.pll(SYN) port map(clk, clk1);
-
-    it_process : process( it )
-        variable d, u : integer range 0 to 9;
-    begin
-
-        d := it/10;
-        u := it mod 10;
-
-        HEX5 <= bcd_to_7seg(std_logic_vector(to_unsigned(d,4)),'0');
-        HEX4 <= bcd_to_7seg(std_logic_vector(to_unsigned(u,4)),'0');
         
-    end process ; -- it_process
-
-
-    
     display : process( sel, reading )
         variable data   :   integer range 0 to 65535;
         variable c, d, u, dec   :   integer range 0 to 9;

@@ -14,10 +14,7 @@ entity dht_driver is
         req         :   in      std_logic;                              -- Requisition pin
         busy        :   out     std_logic;                              -- Busy flag 
         isvalid     :   out     std_logic;                              -- Checksum verification flag
-        reading     :   out     std_logic_vector(31 downto 0);          -- Binary output result data
-        state       :   out     std_logic_vector(3 downto 0);           -- (debug) State machine satate
-        debug       :   out     std_logic;                              -- (debug) Generic Debug flag
-        it          :   out     integer range 0 to 39                   -- (debug) Generic Debug counter                      
+        reading     :   out     std_logic_vector(31 downto 0)           -- Binary output result data                            
     ) ;
 end dht_driver;
 
@@ -45,27 +42,10 @@ architecture main of dht_driver is
         DHT_CHECKSUM
     );
     signal dht_state : dht_state_t;
-    signal debug_t :    std_logic;
     signal enable  :    std_logic;
 
 begin
     
-    -- Debug statements (will be removed)
-    --debug <= debug_t;
-    debug <= enable;
-
-    with dht_state select
-        state <= x"0" when START,
-                 x"1" when WAIT_RQ,
-                 x"2" when START_SIGNAL_L,
-                 x"3" when START_SIGNAL_H,
-                 x"4" when DHT_RESPONSE_L,
-                 x"5" when DHT_RESPONSE_H,
-                 x"6" when DHT_RECEIVE_ZERO,
-                 x"7" when DHT_RECEIVE_DATA,
-                 x"8" when DHT_CHECKSUM,
-                 x"F" when others;
-
     -- Clock management
     clock_management : process( clk )
         variable i : integer range 0 to f_in / f_op;
@@ -156,6 +136,7 @@ begin
                         end if ;
 
                     when START_SIGNAL_L => 
+                        isvalid <= '0';
                         if i = f_op/50 then -- Wait ~20 ms
                             i := 0;
                             dht_state <= START_SIGNAL_H;
@@ -204,11 +185,9 @@ begin
                         end if;
                                             
                     when DHT_RECEIVE_DATA =>
-                        debug_t <= '0';
                         dht_state <= DHT_CHECKSUM;                                                                            
                         if data = '0' then
-                            n := n + 1;
-                            it <= n;                        
+                            n := n + 1;                     
                             dht_state <= DHT_RECEIVE_ZERO;                                                                          
                             if i < f_op/25_000 then  -- ~40 us
                                 bit_stream := bit_stream (38 downto 0) & '0';                            
@@ -219,13 +198,16 @@ begin
                         else
                             i := i + 1;
                             dht_state <= DHT_RECEIVE_DATA;
-                            if i > f_op/2_000 then
-                                i := 0;
-                                debug_t <= '1';
-                                n := 0;
+                            if i > f_op/2_000 then                                
                                 reading <= std_logic_vector(bit_stream(39 downto 8));
                                 bit_stream := (others => '0');
-                                dht_state <= DHT_CHECKSUM;
+                                if n = 40 then
+                                    dht_state <= DHT_CHECKSUM;
+                                else
+                                    dht_state <= START;
+                                end if;
+                                i := 0;
+                                n := 0;
                             end if;
 
                         end if;
